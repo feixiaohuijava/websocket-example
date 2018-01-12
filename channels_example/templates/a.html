@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+
+    <script type="text/javascript">
+        function WebSocketTest()
+        {
+            if ("WebSocket" in window)
+            {
+                console.log("您的浏览器支持 WebSocket!");
+
+                socket = new WebSocket("ws://" + "localhost:8000" + "/channels_example/");
+
+                socket.onerror = function(event) {
+                    console.log(event.data);
+                };
+                //处理服务器返回的消息
+                socket.onmessage = function(event) {
+                    document.getElementById("demaxiya").innerHTML += '<br />' + event.data;
+                }
+                //与websocket建立连接
+                socket.onopen = function() {
+                    //socket.send("hello world");
+                    console.log("start connecting")
+                    socket.send("demaxiya")
+                }
+                socket.onclose = function () {
+                    console.log("closed")
+                }
+
+                // Call onopen directly if socket is already open
+                //if (socket.readyState == WebSocket.OPEN) socket.onopen();
+            }
+
+            else
+            {
+                // 浏览器不支持 WebSocket
+                alert("您的浏览器不支持 WebSocket!");
+            }
+        }
+    </script>
+
+</head>
+<body>
+
+<div id="sse">
+    <a href="javascript:WebSocketTest()">运行 WebSocket</a>
+    <div id="demaxiya">
+
+    </div>
+</div>
+
+</body>
+</html>
